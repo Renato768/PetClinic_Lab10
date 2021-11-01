@@ -23,7 +23,7 @@ public class PetServiceTest {
 
 	@Autowired
 	private PetService petService;
-
+	
 	/**
 	 * 
 	 */
@@ -104,55 +104,56 @@ public class PetServiceTest {
 		int TYPE_ID = 1;
 
 		Pet pet = new Pet(PET_NAME, 1, 1);
-		pet = petService.create(pet);
-		logger.info("" + pet);
+		Pet pets = petService.create(pet);
+		logger.info("PET:" + pets);
 
-		assertThat(pet.getId(), notNullValue());
-		assertThat(PET_NAME, is(pet.getName()));
-		assertThat(OWNER_ID, is(pet.getOwnerId()));
-		assertThat(TYPE_ID,is(pet.getTypeId()));
+		assertThat(pets.getId(), notNullValue());
+		assertThat(pets.getName(), is(PET_NAME));
+		assertThat(pets.getOwnerId(), is(OWNER_ID));
+		assertThat(pets.getTypeId(),is(TYPE_ID));
 
 	}
 
 	/**
-	 * 
-	 */
-	@Test
-	public void testUpdatePet() {
+     * 
+     */
+    @Test
+    public void testUpdatePet() {
 
-		String PET_NAME = "Bear";
-		int OWNER_ID = 1;
-		int TYPE_ID = 1;
-		long create_id = -1;
+        String PET_NAME = "Bear";
+        int OWNER_ID = 1;
+        int TYPE_ID = 1;
+        long create_id = -1;
 
-		String UP_PET_NAME = "Bear2";
-		int UP_OWNER_ID = 2;
-		int UP_TYPE_ID = 2;
+        String UP_PET_NAME = "Bear2";
+        int UP_OWNER_ID = 2;
+        int UP_TYPE_ID = 2;
 
-		Pet pet = new Pet(PET_NAME, OWNER_ID, TYPE_ID);
+        Pet pet = new Pet(PET_NAME, OWNER_ID, TYPE_ID);
 
-		// Create record
-		logger.info(">" + pet);
-		Pet readPet = petService.create(pet);
-		logger.info(">>" + readPet);
+        // Create record
+        logger.info(">" + pet);
+        Pet petCreated = petService.create(pet);
+        logger.info(">>" + petCreated);
 
-		create_id = readPet.getId();
+        create_id = petCreated.getId();
 
-		// Prepare data for update
-		readPet.setName(UP_PET_NAME);
-		readPet.setOwnerId(UP_OWNER_ID);
-		readPet.setTypeId(UP_TYPE_ID);
+        // Prepare data for update
+        petCreated.setName(UP_PET_NAME);
+        petCreated.setOwnerId(UP_OWNER_ID);
+        petCreated.setTypeId(UP_TYPE_ID);
 
-		// Execute update
-		Pet upgradePet = petService.update(readPet);
-		logger.info(">>>>" + upgradePet);
+        // Execute update
+        Pet upgradePet = petService.update(petCreated);
+        logger.info(">>>>" + upgradePet);
 
-		assertThat(create_id ,notNullValue());
-		assertThat(create_id, is(upgradePet.getId()));
-		assertThat(UP_PET_NAME, is(upgradePet.getName()));
-		assertThat(UP_OWNER_ID, is(upgradePet.getTypeId()));
-		assertThat(UP_TYPE_ID, is(upgradePet.getOwnerId()));
-	}
+        //        ACTUAL       EXPECTED
+        assertThat(create_id ,notNullValue());
+        assertThat(upgradePet.getId(), is(create_id));
+        assertThat(upgradePet.getName(), is(UP_PET_NAME));
+        assertThat(upgradePet.getTypeId(), is(UP_OWNER_ID));
+        assertThat(upgradePet.getOwnerId(), is(UP_TYPE_ID));
+    }
 
 	/**
 	 * 
